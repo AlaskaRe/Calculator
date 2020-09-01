@@ -1,7 +1,7 @@
 import wx
 import wx.lib.masked as mked
 import wx.lib.inspection
-from manypanels import *
+from many_panels import *
 
 # global n, n_backward
 # n = '放坡'

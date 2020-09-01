@@ -6,7 +6,7 @@
 import wx
 import wx.lib.masked as mked
 import wx.lib.inspection
-
+import wx.grid as girdlib
 slope_grade = 1
 
 
@@ -67,6 +67,16 @@ class OptionalPanelSlope(wx.Panel):
                   self.button_slope)
         # 接收用户输入值来确定有多少级放坡
 
+        # 创建grid接受用户输入的参数
+        self.slope_grid = girdlib.Grid(self)
+        self.slope_grid.CreateGrid(2, 4)
+        self.slope_grid.SetCornerLabelValue("序号")
+        self.slope_grid.SetColLabelValue(0, "坡高/m")
+        self.slope_grid.SetColLabelValue(1, "水平距离/m")
+        self.slope_grid.SetColLabelValue(2, "坡率系数")
+        self.slope_grid.SetColLabelValue(3, "压顶(台宽)/m")
+
+        # 设置布局
         self.__do_layout()
 
         """
@@ -82,12 +92,16 @@ class OptionalPanelSlope(wx.Panel):
 
     def __do_layout(self):
         opt_row_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        opt_col_sizer = wx.BoxSizer(wx.VERTICAL)
         opt_row_sizer.Add(self.staticText_supportLength, 1, wx.ALL, 5)
         opt_row_sizer.Add(self.textCtrl_supportLength, 1, wx.ALL, 5)
         opt_row_sizer.Add(self.staticText_slopeRate, 1, wx.ALL, 5)
         opt_row_sizer.Add(self.NumCtrl_slopeRate, 1, wx.ALL, 5)
         opt_row_sizer.Add(self.button_slope, 1, wx.ALL, 5)
-        self.SetSizer(opt_row_sizer)
+        # self.SetSizer(opt_row_sizer)
+        opt_col_sizer.Add(opt_row_sizer, 1, wx.BOTTOM, 5)
+        opt_col_sizer.Add(self.slope_grid, 1, wx.TOP, 5)
+        self.SetSizerAndFit(opt_col_sizer)
 
 
 class OptionalPanelNailWall(wx.Panel):
@@ -164,7 +178,3 @@ class MyFrame(wx.Frame):
             OptPanel = optionalpanels[value]
             self.main_sizer.Add(OptPanel, 1, wx.ALL, 5)
             self.SetSizerAndFit(self.main_sizer)
-
-
-class SlopeGrid(wx.grid.Grid):
-    # 添加新的属性，让其可用。
