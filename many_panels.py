@@ -65,7 +65,13 @@ class OptionalPanelSlope(wx.Panel):
         # Once click the button, then create a gird which rows number as expected
         self.Bind(wx.EVT_BUTTON, self.create_grid,
                   self.button_slope)
+        # 创建grid
+        SlopeGrid = gridlib.Grid(self)
+        self.slope_grid = SlopeGrid.CreateGrid(0, 0)
+
         # 设置布局
+        self.opt_row_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.opt_col_sizer = wx.BoxSizer(wx.VERTICAL)
         self.__do_layout()
 
         """
@@ -75,7 +81,6 @@ class OptionalPanelSlope(wx.Panel):
 
     def create_grid(self, event):
         grade = self.NumCtrl_slopeRate.GetValue()
-        self.slope_grid = gridlib.Grid(self)
         self.slope_grid.CreateGrid(grade, 4)
         self.slope_grid.SetCornerLabelValue("序号")
         self.slope_grid.SetColLabelValue(0, "坡高/m")
@@ -85,25 +90,23 @@ class OptionalPanelSlope(wx.Panel):
         self.__do_layout()
 
     def __do_layout(self):
-        opt_row_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        opt_col_sizer = wx.BoxSizer(wx.VERTICAL)
+
         try:
             try:
-                opt_col_sizer.Remove(self.slope_grid)
-                opt_col_sizer.Add(self.slope_grid, 1, wx.TOP, 5)
-                self.SetSizerAndFit(opt_col_sizer)
+                self.opt_col_sizer.Remove(self.slope_grid)
+                self.opt_col_sizer.Add(self.slope_grid, 1, wx.TOP, 5)
             except:
-                opt_col_sizer.Add(self.slope_grid, 1, wx.TOP, 5)
-                self.SetSizerAndFit(opt_col_sizer)
+                self.opt_col_sizer.Add(self.slope_grid, 1, wx.TOP, 5)
         except:
-            opt_row_sizer.Add(self.staticText_supportLength, 1, wx.ALL, 5)
-            opt_row_sizer.Add(self.textCtrl_supportLength, 1, wx.ALL, 5)
-            opt_row_sizer.Add(self.staticText_slopeRate, 1, wx.ALL, 5)
-            opt_row_sizer.Add(self.NumCtrl_slopeRate, 1, wx.ALL, 5)
-            opt_row_sizer.Add(self.button_slope, 1, wx.ALL, 5)
-            # self.SetSizer(opt_row_sizer)
-            opt_col_sizer.Add(opt_row_sizer, 1, wx.BOTTOM, 5)
-            self.SetSizerAndFit(opt_col_sizer)
+            self.opt_row_sizer.Add(self.staticText_supportLength, 1, wx.ALL, 5)
+            self.opt_row_sizer.Add(self.textCtrl_supportLength, 1, wx.ALL, 5)
+            self.opt_row_sizer.Add(self.staticText_slopeRate, 1, wx.ALL, 5)
+            self.opt_row_sizer.Add(self.NumCtrl_slopeRate, 1, wx.ALL, 5)
+            self.opt_row_sizer.Add(self.button_slope, 1, wx.ALL, 5)
+
+            self.opt_col_sizer.Add(self.opt_row_sizer, 1, wx.BOTTOM, 5)
+
+        self.SetSizerAndFit(self.opt_col_sizer)
 
 
 class OptionalPanelNailWall(wx.Panel):
